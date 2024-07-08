@@ -37,11 +37,16 @@ internal class Program
 
 		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 
+		//Stand up a client that references the data storage container that has the keys
+		/*** NOTE: The container must already exist in your storage account ***/
 		var container = new BlobContainerClient(builder.Configuration.GetConnectionString("StorageAccount"),
 			builder.Configuration.GetValue<string>("DataProtection:StorageAccountContainerName"));
 
-		BlobClient blobClient = container.GetBlobClient(builder.Configuration.GetValue<string>("DataProtection:BlobName"));
+		//Stand up a blob client to read/write the required keys to a specific blob
+		/*** NOTE: Your blob name MUST terminate in '.xml' to be accessed, but it need not exist in the container prior to running ***/
+		var blobClient = container.GetBlobClient(builder.Configuration.GetValue<string>("DataProtection:BlobName"));
 
+		//Add dataprotection, key persistence, and key protection
 		builder.Services.AddDataProtection()
 			.PersistKeysToAzureBlobStorage(blobClient)
 			.ProtectKeysWithAzureKeyVault(builder.Configuration.GetValue<Uri>("DataProtection:KeyVaultUri"), new DefaultAzureCredential())
