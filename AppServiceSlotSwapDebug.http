@@ -1,0 +1,6 @@
+@AppServiceSlotSwapDebug_HostAddress = http://localhost:5163
+
+GET {{AppServiceSlotSwapDebug_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
