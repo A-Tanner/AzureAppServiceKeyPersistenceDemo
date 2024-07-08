@@ -37,8 +37,8 @@ internal class Program
 
 		builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 
-		var container = new BlobContainerClient(builder.Configuration.GetConnectionString("DataStorage"),
-			builder.Configuration.GetValue<string>("DataProtection:DataStorageContainerName"));
+		var container = new BlobContainerClient(builder.Configuration.GetConnectionString("StorageAccount"),
+			builder.Configuration.GetValue<string>("DataProtection:StorageAccountContainerName"));
 
 		BlobClient blobClient = container.GetBlobClient(builder.Configuration.GetValue<string>("DataProtection:BlobName"));
 
