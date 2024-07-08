@@ -46,7 +46,6 @@ internal class Program
 		/*** NOTE: Your blob name MUST terminate in '.xml' to be accessed, but it need not exist in the container prior to running ***/
 		var blobClient = container.GetBlobClient(builder.Configuration.GetValue<string>("DataProtection:BlobName"));
 
-		//Add dataprotection, key persistence, and key protection
 		builder.Services.AddDataProtection()
 			.PersistKeysToAzureBlobStorage(blobClient)
 			.ProtectKeysWithAzureKeyVault(builder.Configuration.GetValue<Uri>("DataProtection:KeyVaultUri"), new DefaultAzureCredential())
